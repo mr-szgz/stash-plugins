@@ -1,3 +1,12 @@
 [submodule "feederbox826-plugins"]
 	path = submodules/feederbox826-plugins
 	url = git@github.com:feederbox826/plugins.git
+[submodule "scruffynerf-aspectratio"]
+	path = submodules/scruffynerf-aspectratio
+	url = git@github.com-mr-szgz:scruffynerf/aspectratio.git
+[submodule "stg-annon-performerBodyCalculator"]
+	path = submodules/stg-anon-performerBodyCalculator
+	url = git@github.com:stg-annon/performerBodyCalculator.git
+[submodule "stashapp-CommunityScripts"]
+	path = submodules/stashapp-CommunityScripts
+	url = git@github.com:stashapp/CommunityScripts.git
