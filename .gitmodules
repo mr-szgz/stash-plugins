@@ -1,0 +1,3 @@
+[submodule "feederbox826-plugins"]
+	path = submodules/feederbox826-plugins
+	url = git@github.com:feederbox826/plugins.git
