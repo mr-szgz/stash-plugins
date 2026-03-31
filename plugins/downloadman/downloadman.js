@@ -109,11 +109,12 @@ const SCENE_CACHE_STORAGE_KEYS = [
   `${PLUGIN_ID}:scene-cache`,
   SCENE_CACHE_DB_NAME,
 ];
+const DEFAULT_CACHE_SIZE_MB = 500;
+const DEFAULT_MAX_CONCURRENT_DOWNLOADS = 2;
+const ENABLE_DEBUG_LOGGING = true;
 
 const pluginSettings = {
-  enableLogging: true,
-  cacheSizeMB: 10,
-  maxConcurrentDownloads: 2,
+  cacheSizeMB: DEFAULT_CACHE_SIZE_MB,
 };
 
 const sceneCache = {
@@ -261,32 +262,9 @@ async function runJob(job) {
 }
 `;
 
-function parseBooleanSetting(value, fallback = true) {
-  if (typeof value === "boolean") {
-    return value;
-  }
-
-  if (typeof value === "string") {
-    const normalizedValue = value.trim().toLowerCase();
-    if (normalizedValue === "true") {
-      return true;
-    }
-    if (normalizedValue === "false") {
-      return false;
-    }
-  }
-
-  return fallback;
-}
-
 function parseNumberSetting(value, fallback = 0) {
   const numericValue = Number(value);
   return Number.isFinite(numericValue) ? numericValue : fallback;
-}
-
-function normalizeMaxConcurrentDownloads(value, fallback = 2) {
-  const normalizedValue = Math.floor(parseNumberSetting(value, fallback));
-  return Number.isFinite(normalizedValue) ? Math.max(1, normalizedValue) : fallback;
 }
 
 function normalizePluginsConfig(rawPlugins) {
@@ -330,27 +308,18 @@ async function loadPluginSettings() {
     const json = await response.json();
     const pluginsConfig = normalizePluginsConfig(json?.data?.configuration?.plugins);
     const currentPluginConfig = pluginsConfig?.[PLUGIN_ID] || {};
-    pluginSettings.enableLogging = parseBooleanSetting(currentPluginConfig.enableLogging, true);
-    pluginSettings.cacheSizeMB = parseNumberSetting(currentPluginConfig.cacheSizeMB, 10);
-    pluginSettings.maxConcurrentDownloads = normalizeMaxConcurrentDownloads(
-      currentPluginConfig.maxConcurrentDownloads,
-      2
-    );
+    pluginSettings.cacheSizeMB = parseNumberSetting(currentPluginConfig.cacheSizeMB, DEFAULT_CACHE_SIZE_MB);
     debugLog("settings:loaded", {
-      enableLogging: pluginSettings.enableLogging,
       cacheSizeMB: pluginSettings.cacheSizeMB,
-      maxConcurrentDownloads: pluginSettings.maxConcurrentDownloads,
     });
   } catch (error) {
-    pluginSettings.enableLogging = true;
-    pluginSettings.cacheSizeMB = 10;
-    pluginSettings.maxConcurrentDownloads = 2;
+    pluginSettings.cacheSizeMB = DEFAULT_CACHE_SIZE_MB;
     debugError("settings:load-error", error);
   }
 }
 
 function debugLog(eventName, details) {
-  if (!pluginSettings.enableLogging) {
+  if (!ENABLE_DEBUG_LOGGING) {
     return;
   }
 
@@ -363,7 +332,7 @@ function debugLog(eventName, details) {
 }
 
 function debugError(eventName, details) {
-  if (!pluginSettings.enableLogging) {
+  if (!ENABLE_DEBUG_LOGGING) {
     return;
   }
 
@@ -700,7 +669,7 @@ async function restoreDownloadButtonState(button, sceneId) {
 }
 
 function getMaxConcurrentDownloads() {
-  return normalizeMaxConcurrentDownloads(pluginSettings.maxConcurrentDownloads, 2);
+  return DEFAULT_MAX_CONCURRENT_DOWNLOADS;
 }
 
 function escapeHtml(value) {
@@ -1117,8 +1086,6 @@ function renderDownloadManagerPanel() {
           <div>Name: ${escapeHtml(PLUGIN_NAME)}</div>
           <div>ID: ${escapeHtml(PLUGIN_ID)}</div>
           <div>Version: ${escapeHtml(PLUGIN_VERSION)}</div>
-          <div>Max parallel: ${escapeHtml(getMaxConcurrentDownloads())}</div>
-          <div>Logging: ${pluginSettings.enableLogging ? "enabled" : "disabled"}</div>
           <div>Cache: ${escapeHtml(pluginSettings.cacheSizeMB)} MB</div>
           <div>Downloads detected: ${downloadManager.detectedDownloads}</div>
           <div>Completed: ${downloadManager.completedDownloads}</div>
@@ -1675,9 +1642,7 @@ async function initializePlugin() {
   ensureDownloadManagerUI();
   configureDownloadWorker();
   debugLog("plugin:loaded", {
-    enableLogging: pluginSettings.enableLogging,
     cacheSizeMB: pluginSettings.cacheSizeMB,
-    maxConcurrentDownloads: pluginSettings.maxConcurrentDownloads,
   });
 
   // Listen for page changes (e.g. navigating between Scenes/Performers pages)

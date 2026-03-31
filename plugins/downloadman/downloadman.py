@@ -11,7 +11,6 @@ from config import (
     fetch_plugin_settings,
     load_path_mappings,
     read_plugin_request,
-    resolve_path_mappings_file,
 )
 
 
@@ -34,21 +33,6 @@ def detect_operation(args: dict[str, Any]) -> str:
     return "inspect_configuration"
 
 
-def summarize_hook_context(hook_context: Any) -> dict[str, Any]:
-    if not isinstance(hook_context, dict):
-        return {}
-
-    input_fields = hook_context.get("inputFields")
-    if not isinstance(input_fields, list):
-        input_fields = []
-
-    return {
-        "id": hook_context.get("id"),
-        "type": hook_context.get("type"),
-        "inputFields": input_fields,
-    }
-
-
 def get_settings(request: Any) -> tuple[PluginSettings, str | None]:
     try:
         return fetch_plugin_settings(request), None
@@ -60,8 +44,7 @@ def get_settings(request: Any) -> tuple[PluginSettings, str | None]:
 
 def inspect_configuration(request: Any) -> dict[str, Any]:
     settings, settings_error = get_settings(request)
-    mappings_path = resolve_path_mappings_file(settings, request)
-    mappings, mapping_errors = load_path_mappings(mappings_path)
+    mappings, mapping_errors = load_path_mappings(settings.path_mappings)
 
     output = {
         "plugin": {
@@ -78,7 +61,7 @@ def inspect_configuration(request: Any) -> dict[str, Any]:
         "settings": settings.to_dict(),
         "settingsLoadError": settings_error,
         "pathMappings": {
-            "path": str(mappings_path),
+            "source": "plugin setting 'pathMappings'",
             "count": len(mappings),
             "missingLocalPaths": [mapping.local for mapping in mappings if not mapping.local_exists],
             "errors": mapping_errors,
@@ -89,11 +72,10 @@ def inspect_configuration(request: Any) -> dict[str, Any]:
 
 def validate_path_mappings(request: Any) -> dict[str, Any]:
     settings, settings_error = get_settings(request)
-    mappings_path = resolve_path_mappings_file(settings, request)
-    mappings, errors = load_path_mappings(mappings_path)
+    mappings, errors = load_path_mappings(settings.path_mappings)
 
     output = {
-        "path": str(mappings_path),
+        "source": "plugin setting 'pathMappings'",
         "valid": not errors,
         "settingsLoadError": settings_error,
         "count": len(mappings),
@@ -103,37 +85,9 @@ def validate_path_mappings(request: Any) -> dict[str, Any]:
     return json_result(output=output)
 
 
-def handle_scene_event(request: Any) -> dict[str, Any]:
-    settings, settings_error = get_settings(request)
-    hook_summary = summarize_hook_context(request.args.get("hookContext"))
-
-    if not settings.enable_python_hooks:
-        return json_result(
-            output={
-                "status": "skipped",
-                "reason": "enablePythonHooks is disabled",
-                "settingsLoadError": settings_error,
-                "hook": hook_summary,
-            }
-        )
-
-    if settings.log_hook_payloads:
-        log(f"scene hook received: {json.dumps(hook_summary, ensure_ascii=True)}")
-
-    return json_result(
-        output={
-            "status": "handled",
-            "settingsLoadError": settings_error,
-            "hook": hook_summary,
-            "note": "Python hook scaffold executed successfully.",
-        }
-    )
-
-
 OPERATIONS: dict[str, Callable[[Any], dict[str, Any]]] = {
     "inspect_configuration": inspect_configuration,
     "validate_path_mappings": validate_path_mappings,
-    "handle_scene_event": handle_scene_event,
 }
 
 

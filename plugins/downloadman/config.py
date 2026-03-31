@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping
 from urllib.error import HTTPError, URLError
@@ -11,25 +11,13 @@ from urllib.request import Request, urlopen
 
 PLUGIN_ID = "downloadman"
 PLUGIN_NAME = "Downloadman"
-DEFAULT_PATH_MAPPINGS_FILE = "stash_path_mappings.json"
+DEFAULT_CACHE_SIZE_MB = 500.0
 
 
 def _pick(mapping: Mapping[str, Any], *keys: str, default: Any = None) -> Any:
     for key in keys:
         if key in mapping:
             return mapping[key]
-    return default
-
-
-def _parse_bool(value: Any, default: bool = False) -> bool:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, str):
-        normalized = value.strip().lower()
-        if normalized in {"1", "true", "yes", "on"}:
-            return True
-        if normalized in {"0", "false", "no", "off"}:
-            return False
     return default
 
 
@@ -92,15 +80,14 @@ class PluginRequest:
 
 @dataclass(slots=True)
 class PluginSettings:
-    enable_logging: bool = True
-    cache_size_mb: float = 10.0
-    max_concurrent_downloads: int = 2
-    enable_python_hooks: bool = False
-    log_hook_payloads: bool = False
-    path_mappings_file: str = DEFAULT_PATH_MAPPINGS_FILE
+    cache_size_mb: float = DEFAULT_CACHE_SIZE_MB
+    path_mappings: Any = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "cacheSizeMB": self.cache_size_mb,
+            "pathMappings": self.path_mappings,
+        }
 
 
 @dataclass(slots=True)
@@ -237,40 +224,25 @@ def fetch_plugin_settings(request: PluginRequest) -> PluginSettings:
     if not isinstance(plugin_config, dict):
         plugin_config = {}
 
-    path_mappings_file = str(
-        plugin_config.get("pathMappingsFile") or DEFAULT_PATH_MAPPINGS_FILE
-    ).strip() or DEFAULT_PATH_MAPPINGS_FILE
-
     return PluginSettings(
-        enable_logging=_parse_bool(plugin_config.get("enableLogging"), True),
-        cache_size_mb=max(0.0, _parse_float(plugin_config.get("cacheSizeMB"), 10.0)),
-        max_concurrent_downloads=max(1, _parse_int(plugin_config.get("maxConcurrentDownloads"), 2)),
-        enable_python_hooks=_parse_bool(plugin_config.get("enablePythonHooks"), False),
-        log_hook_payloads=_parse_bool(plugin_config.get("logHookPayloads"), False),
-        path_mappings_file=path_mappings_file,
+        cache_size_mb=max(0.0, _parse_float(plugin_config.get("cacheSizeMB"), DEFAULT_CACHE_SIZE_MB)),
+        path_mappings=plugin_config.get("pathMappings") or [],
     )
 
 
-def resolve_path_mappings_file(settings: PluginSettings, request: PluginRequest) -> Path:
-    configured_path = Path(settings.path_mappings_file)
-    if configured_path.is_absolute():
-        return configured_path
+def load_path_mappings(raw_config: Any) -> tuple[list[PathMapping], list[str]]:
+    raw_mappings = raw_config
 
-    plugin_dir = request.server_connection.plugin_dir or _plugin_dir_fallback()
-    return plugin_dir / configured_path
-
-
-def load_path_mappings(path: Path) -> tuple[list[PathMapping], list[str]]:
-    if not path.exists():
-        return [], [f"Path mappings file does not exist: {path}"]
-
-    try:
-        raw_mappings = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        return [], [f"Path mappings file is not valid JSON: {exc}"]
+    if isinstance(raw_config, str):
+        if not raw_config.strip():
+            return [], []
+        try:
+            raw_mappings = json.loads(raw_config)
+        except json.JSONDecodeError as exc:
+            return [], [f"Path mappings must be valid JSON: {exc}"]
 
     if not isinstance(raw_mappings, list):
-        return [], [f"Path mappings file must contain a JSON array: {path}"]
+        return [], ["Path mappings must be a JSON array."]
 
     mappings: list[PathMapping] = []
     errors: list[str] = []
