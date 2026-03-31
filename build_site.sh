@@ -67,6 +67,22 @@ buildPlugin()
     echo "" >> "$outdir"/index.yml
 }
 
-find ./plugins -mindepth 1 -name *.yml | while read file; do
+shouldSkipPlugin()
+{
+    f=$1
+
+    if grep -Eq '^#\s*disabled:\s*true\s*$' "$f"; then
+        echo "Skipping disabled plugin $(basename "$f" .yml)"
+        return 0
+    fi
+
+    return 1
+}
+
+find ./plugins -mindepth 1 -name '*.yml' | while read file; do
+    if shouldSkipPlugin "$file"; then
+        continue
+    fi
+
     buildPlugin "$file"
 done

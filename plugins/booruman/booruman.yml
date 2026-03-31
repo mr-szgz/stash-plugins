@@ -1,0 +1,15 @@
+# disabled: true
+name: Booruman
+# requires: CommunityScriptsUILibrary
+description: Add tags for individual images using a booru tagging model.
+version: 1.0.1
+ui:
+  requires:
+    - CommunityScriptsUILibrary
+  javascript:
+    - booruman.js
+  css:
+    - booruman.css
+  csp:
+    connect-src:
+      - "https://cc1234-deepdanbooru.hf.space"

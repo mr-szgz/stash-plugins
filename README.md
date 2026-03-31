@@ -6,6 +6,7 @@ This repository publishes a Stash plugin source index for the plugins stored in 
 - Source index: `https://mr-szgz.github.io/stash-plugins/main/index.yml`
 
 GitHub Actions rebuilds and publishes the source index when changes are pushed to `main` under `plugins/**`.
+Plugins marked with `# disabled: true` in their `.yml` manifest are skipped from the published index.
 
 ## Available plugin
 
