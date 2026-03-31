@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- Reduced Downloadman to a JS-only scene downloader and removed its Python task/config layer, cache, manager UI, and path-mapping baggage.
 - Restored `plugins/downloadman/stash_path_mappings.json` as the static source of truth for mappings instead of a manifest setting.
+
+### Removed
+- BREAKING: Removed Downloadman's Python task/config layer, cache, manager UI, and path-mapping baggage; the plugin is now a JS-only scene downloader.
 
 ## [1.0.0] - 2026-03-31
 
