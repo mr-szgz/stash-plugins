@@ -1,0 +1,52 @@
+name: Downloadman
+description: Download manager for Stash scenes with a JS UI and Python automation entry points.
+version: 1.1
+ui:
+  javascript:
+    - downloadman.js
+exec:
+  - python
+  - "{pluginDir}/downloadman.py"
+interface: raw
+errLog: info
+settings:
+  enableLogging:
+    displayName: Enable Logging
+    type: BOOLEAN
+  cacheSizeMB:
+    displayName: Scene Cache Size (MB)
+    description: Total persistent scene metadata cache size in MB. Default is 10. Set to 0 to disable caching.
+    type: NUMBER
+  maxConcurrentDownloads:
+    displayName: Max Concurrent Downloads
+    description: Number of scene downloads to run at once. Minimum is 1. Default is 2.
+    type: NUMBER
+  enablePythonHooks:
+    displayName: Enable Python Hooks
+    description: Allow Downloadman's Python hook handlers to run for configured scene events.
+    type: BOOLEAN
+  logHookPayloads:
+    displayName: Log Hook Payloads
+    description: Write a concise summary of scene hook payloads to the Stash log from Python.
+    type: BOOLEAN
+  pathMappingsFile:
+    displayName: Path Mappings File
+    description: Relative or absolute JSON file path for Downloadman's stash path mappings.
+    type: STRING
+tasks:
+  - name: inspect_configuration
+    description: Show the effective Python-side Downloadman configuration and mapping summary.
+    defaultArgs:
+      operation: inspect_configuration
+  - name: validate_path_mappings
+    description: Validate Downloadman's configured path mappings JSON file.
+    defaultArgs:
+      operation: validate_path_mappings
+hooks:
+  - name: handle_scene_event
+    description: Python hook scaffold for scene create and update events.
+    triggeredBy:
+      - Scene.Create.Post
+      - Scene.Update.Post
+    defaultArgs:
+      operation: handle_scene_event
