@@ -2,11 +2,19 @@
 
 This repository publishes a Stash plugin source index for the plugins stored in [`plugins`](./plugins).
 
-- Repository: `https://github.com/mr-szgz/stash-plugins`
-- Source index: `https://mr-szgz.github.io/stash-plugins/main/index.yml`
+## Install
 
-GitHub Actions rebuilds and publishes the source index when changes are pushed to `main` under `plugins/**`.
-Plugins marked with `# disabled: true` in their `.yml` manifest are skipped from the published index.
+1. Visit Settings > Plugins > Available Plugins (Scroll) > Add Source
+
+2. You can add the stable source like:
+
+Name: MR SZGZ
+Source URL: [https://mr-szgz.github.io/stash-plugins/main/index.yml](https://mr-szgz.github.io/stash-plugins/main/index.yml)
+Local Path: (empty)
+
+### Development
+
+Active Development is on this source index: [https://mr-szgz.github.io/stash-plugins/dev/index.yml](https://mr-szgz.github.io/stash-plugins/dev/index.yml) (experimental!)
 
 ## Available plugin
 
