@@ -32,8 +32,10 @@ const SCENE_QUERY = `
 
 let scanQueued = false;
 const React = PluginApi.React;
+const TOAST_SPINNER_STYLE_ID = "downloadman-toast-style";
 const downloadmanState = {
   settings: null,
+  toast: null,
 };
 
 const DownloadmanToolsPage = () =>
@@ -46,24 +48,144 @@ const DownloadmanToolsPage = () =>
 
 PluginApi.register.route(TOOLS_ROUTE, DownloadmanToolsPage);
 
-async function loadSettings() {
+function ensureToastBridge() {
+  if (!PluginApi.patch?.after || !PluginApi.hooks?.useToast || downloadmanState.toastBridgeMounted) {
+    return;
+  }
+
+  downloadmanState.toastBridgeMounted = true;
+  PluginApi.patch.after("MainNavBar.MenuItems", (props, result) =>
+    React.createElement(React.Fragment, null, result, React.createElement(DownloadmanToastBridge))
+  );
+}
+
+function DownloadmanToastBridge() {
+  const toast = PluginApi.hooks.useToast();
+
+  React.useEffect(() => {
+    downloadmanState.toast = toast;
+
+    return () => {
+      if (downloadmanState.toast === toast) {
+        downloadmanState.toast = null;
+      }
+    };
+  }, [toast]);
+
+  return null;
+}
+
+function ensureToastStyles() {
+  if (document.getElementById(TOAST_SPINNER_STYLE_ID)) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = TOAST_SPINNER_STYLE_ID;
+  style.textContent = `
+    @keyframes downloadman-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  `;
+  document.head.append(style);
+}
+
+function makeToastIcon(kind) {
+  const sharedStyle = {
+    flex: "0 0 auto",
+    width: "0.95rem",
+    height: "0.95rem",
+  };
+
+  if (kind === "spinner") {
+    ensureToastStyles();
+    return React.createElement("span", {
+      "aria-hidden": "true",
+      style: {
+        ...sharedStyle,
+        border: "2px solid currentColor",
+        borderTopColor: "transparent",
+        borderRadius: "9999px",
+        animation: "downloadman-spin 0.9s linear infinite",
+      },
+    });
+  }
+
+  return React.createElement("span", {
+    "aria-hidden": "true",
+    style: {
+      ...sharedStyle,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "0.95rem",
+      fontWeight: "700",
+      lineHeight: "1",
+    },
+  }, "✓");
+}
+
+function makeToastContent(kind, message) {
+  return React.createElement("span", {
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "0.55rem",
+    },
+  }, makeToastIcon(kind), React.createElement("span", null, message));
+}
+
+function showDownloadStartingToast() {
+  downloadmanState.toast?.toast?.({
+    variant: "warning",
+    delay: 1600,
+    content: makeToastContent("spinner", "Preparing download..."),
+  });
+}
+
+function showDownloadCompleteToast(filename) {
+  const message = filename ? `Downloaded ${filename}` : "Download complete";
+  downloadmanState.toast?.success?.(makeToastContent("done", message));
+}
+
+function showDownloadErrorToast(error) {
+  downloadmanState.toast?.error?.(error);
+}
+
+async function graphqlRequest(query, variables = {}) {
   const response = await fetch("/graphql", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({
-      query: `
-        query DownloadmanPluginConfiguration {
-          configuration {
-            plugins
-          }
-        }
-      `,
+      query,
+      variables,
     }),
   });
 
   const payload = await response.json();
-  const settings = payload.data.configuration.plugins.downloadman;
+
+  if (!response.ok) {
+    throw new Error(`GraphQL request failed (${response.status} ${response.statusText})`);
+  }
+
+  if (payload.errors?.length) {
+    throw new Error(payload.errors.map((error) => error.message).join("; "));
+  }
+
+  return payload.data;
+}
+
+async function loadSettings() {
+  const data = await graphqlRequest(`
+    query DownloadmanPluginConfiguration {
+      configuration {
+        plugins
+      }
+    }
+  `);
+  const settings = data.configuration.plugins.downloadman;
 
   downloadmanState.settings = {
     displayGridLinks: settings.displayGridLinks,
@@ -120,6 +242,15 @@ function stopEvent(event) {
   event.stopImmediatePropagation();
 }
 
+function syncButtonOpacity(button) {
+  if (button.dataset.state === "done" || button.matches(":hover")) {
+    button.style.opacity = "1";
+    return;
+  }
+
+  button.style.opacity = "0.28";
+}
+
 function createDownloadButton(sceneId, href) {
   const button = document.createElement("a");
   button.className = BUTTON_CLASS;
@@ -145,11 +276,11 @@ function createDownloadButton(sceneId, href) {
   setButtonState(button, "idle");
 
   button.addEventListener("mouseenter", () => {
-    button.style.opacity = "1";
+    syncButtonOpacity(button);
   });
 
   button.addEventListener("mouseleave", () => {
-    button.style.opacity = button.dataset.state === "done" ? "1" : "0.28";
+    syncButtonOpacity(button);
   });
 
   for (const eventName of ["pointerdown", "mousedown", "mouseup", "touchstart", "touchend", "dblclick"]) {
@@ -185,17 +316,13 @@ function saveBlob(blob, filename) {
 }
 
 async function fetchScene(sceneId) {
-  const response = await fetch("/graphql", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      query: SCENE_QUERY,
-      variables: { id: sceneId },
-    }),
-  });
-  const payload = await response.json();
-  const scene = payload.data.findScene;
+  const data = await graphqlRequest(SCENE_QUERY, { id: sceneId });
+  const scene = data.findScene;
+
+  if (!scene?.id || !scene.files?.[0]?.basename || !scene.paths?.stream) {
+    throw new Error("Scene download information is unavailable.");
+  }
+
   return {
     sceneId: scene.id,
     filename: scene.files[0].basename,
@@ -205,23 +332,37 @@ async function fetchScene(sceneId) {
 
 async function downloadScene(button) {
   setButtonState(button, "busy");
-
-  const scene = await fetchScene(button.dataset.sceneId);
-  button.href = scene.streamUrl;
-
-  const response = await fetch(scene.streamUrl, { credentials: "include" });
-  const blob = await response.blob();
-  saveBlob(blob, scene.filename);
-
-  setButtonState(button, "done");
   button.style.opacity = "1";
 
-  window.setTimeout(() => {
-    if (button.isConnected && button.dataset.state === "done") {
-      setButtonState(button, "idle");
-      button.style.opacity = "0.28";
+  try {
+    showDownloadStartingToast();
+
+    const scene = await fetchScene(button.dataset.sceneId);
+    button.href = scene.streamUrl;
+
+    const response = await fetch(scene.streamUrl, { credentials: "include" });
+    if (!response.ok) {
+      throw new Error(`Download failed (${response.status} ${response.statusText})`);
     }
-  }, 1600);
+
+    const blob = await response.blob();
+    saveBlob(blob, scene.filename);
+
+    setButtonState(button, "done");
+    button.style.opacity = "1";
+    showDownloadCompleteToast(scene.filename);
+
+    window.setTimeout(() => {
+      if (button.isConnected && button.dataset.state === "done") {
+        setButtonState(button, "idle");
+        syncButtonOpacity(button);
+      }
+    }, 1600);
+  } catch (error) {
+    setButtonState(button, "idle");
+    syncButtonOpacity(button);
+    showDownloadErrorToast(error);
+  }
 }
 
 function mountCardButton(card) {
@@ -388,6 +529,7 @@ function queueScan() {
 }
 
 async function start() {
+  ensureToastBridge();
   await loadSettings();
   queueScan();
   new MutationObserver(queueScan).observe(document.body, {

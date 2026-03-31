@@ -113,4 +113,6 @@ dmypy.json
 # User-local plugin files
 plugins/downloadman/stash_path_mappings.json
 
-.codex-research/
+
+# TODO(PLO): uncomment and commit the line below BEFORE cutting next dev -> main RELEASE so research docs are neve recommited to main branch [PLO]
+# .codex-research/

@@ -1,0 +1,8 @@
+online: https://docs.stashapp.cc/api/
+online: https://docs.stashapp.cc/in-app-manual/configuration/
+copied: ui/v2.5/src/docs/en/Manual/Configuration.md
+copied: internal/api/server.go
+copied: internal/api/authentication.go
+copied: pkg/session/session.go
+copied: ui/v2.5/src/core/createClient.ts
+copied: pkg/scraper/stash.go

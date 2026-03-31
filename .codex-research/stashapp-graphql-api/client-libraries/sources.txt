@@ -1,0 +1,10 @@
+online: https://docs.stashapp.cc/in-app-manual/plugins/embeddedplugins/
+online: https://docs.stashapp.cc/in-app-manual/plugins/uipluginapi/
+copied: ui/v2.5/src/docs/en/Manual/EmbeddedPlugins.md
+copied: ui/v2.5/src/docs/en/Manual/UIPluginApi.md
+copied: ui/v2.5/src/pluginApi.d.ts
+copied: ui/v2.5/src/pluginApi.tsx
+copied: pkg/plugin/util/client.go
+copied: pkg/plugin/examples/python/stash_interface.py
+copied: pkg/plugin/examples/common/graphql.go
+copied: pkg/javascript/gql.go

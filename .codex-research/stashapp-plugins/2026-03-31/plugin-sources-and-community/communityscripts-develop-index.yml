@@ -1,0 +1,744 @@
+- id: comicInfoExtractor
+  name: Comic Info Extractor
+  metadata:
+    description: Extract the metadata from cbz with the Comicrack standard (ComicInfo.xml)
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: comicInfoExtractor.zip
+  sha256: 4b1290626973787733dadcf291b3d28f8232942c6107165436fc1afb2b4ee3e4
+
+- id: stashAppAndroidTvCompanion
+  name: StashAppAndroidTV Companion
+  metadata:
+    description: A companion plugin for StashAppAndroidTV
+  version: 0.0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: stashAppAndroidTvCompanion.zip
+  sha256: db1abf0144f510033c344b48a4ff20406180cffbfa77a3eaaaa2360792862b8d
+
+- id: setPerformersFromTags
+  name: Set Performers From Tags
+  metadata:
+    description: Automatically sets performers in scenes and images based on tags.
+  version: 1.0.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: setPerformersFromTags.zip
+  sha256: 81598d8b4b02d4508322835dccdfaf5ee22148452c24094cf4b56bebd1573ffe
+
+- id: filemonitor
+  name: FileMonitor
+  metadata:
+    description: Monitors the Stash library folders, and updates Stash if any changes occurs in the Stash library paths.
+  version: 1.0.5-43feb59
+  date: 2025-12-20 01:59:59
+  path: filemonitor.zip
+  sha256: 610f243e7c534ba5b1d958062000e577353793ee499d20206934ed33fa3335dd
+
+- id: AudioPlayer
+  name: AudioPlayer
+  metadata:
+    description: Add an audio-only toggle button and support for audio files in the Stash player through hls transcoder.
+  version: 0.3-43feb59
+  date: 2025-12-20 01:59:59
+  path: AudioPlayer.zip
+  sha256: a050e8f9800a5364cf884c9237d2814f5c30b72372786237aa80eccdbef980cd
+
+- id: nfoSceneParser
+  name: nfoSceneParser
+  metadata:
+    description: Fills scene data from NFO or filename pattern
+  version: 1.5.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: nfoSceneParser.zip
+  sha256: cb7172b361fd93a01ae759c477cef7e6ccbe8c13dfe2623ecbfc94dcc9fec343
+
+- id: e621_tagger
+  name: e621_tagger
+  metadata:
+    description: Finding images and videos on e621 and tagging them.
+  version: 0.5-43feb59
+  date: 2025-12-20 01:59:59
+  path: e621_tagger.zip
+  sha256: e53e8b9b7f82decc17e140aba3c4b7dc9549515c06321ece3e6b29440d9cbeb3
+
+- id: sceneCoverCropper
+  name: Scene Cover Cropper
+  metadata:
+    description: Crop Scene Cover Images
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: sceneCoverCropper.zip
+  sha256: f0e9d7fb619c7a4d58a7e5f40d95f9bc3715401012013e9eb855bf96cdd2a009
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: LocalVisage
+  name: Local Visage
+  metadata:
+    description: Local Performer Recognition plugin using DeepFace
+  version: 1.0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: LocalVisage.zip
+  sha256: 5d7572bbf4f8094d184c42b8c6d29980ea05c0aa0f31d71e46dec24ddac1d2cd
+  requires:
+    - PythonDepManager
+    - stashUserscriptLibrary7dJx1qP
+
+- id: scenePageRememberStates
+  name: Scene Page Remember States
+  metadata:
+    description: Uses local storage to remember the state of the scene page detail panel nav bar and activate it on page load. Remembers collapse state of the divider.
+  version: 0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: scenePageRememberStates.zip
+  sha256: e5aeb6913870c1904ce5b8a3715675670c4cb67f282adee875d505a0ac6bb24d
+
+- id: hotCards
+  name: Hot Cards
+  metadata:
+    description: Adds custom styling to card elements that match a Tag ID or a Rating Threshold.
+  version: 1.2.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: hotCards.zip
+  sha256: da1ad5c565b85ef520a211d030fc7b881fd00ee893fcde1f35951c1523b0aaab
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: cjCardTweaks
+  name: CJ's Card Tweaks.
+  metadata:
+    description: Provides various tweaks for the Stash cards.
+  version: 1.2-a3eb5e0
+  date: 2026-03-05 12:20:20
+  path: cjCardTweaks.zip
+  sha256: 89fbdd42c1792f745ddbbbb9b4d2c922c97d8791a52bc5eaed882829ac0b2651
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: stashNotifications
+  name: StashNotifications
+  metadata:
+    description: Receive notifications about plugin and scraper changes.
+  version: 1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: stashNotifications.zip
+  sha256: a6f47671f649fd64e13c0e593a87f36b44a6df50b0550783b1596a3434107d3b
+
+- id: timestampTrade
+  name: Timestamp Trade
+  metadata:
+    description: Sync Markers with timestamp.trade, a new database for sharing markers.
+  version: 0.8.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: timestampTrade.zip
+  sha256: c88b2493e12ba119069cc0f0274e099f2522b3cf2fe7f6a985cec36699424bf8
+
+- id: TPDBMarkers
+  name: The Porn DB Markers
+  metadata:
+    description: Sync Markers from The Porn DB aka theporndb.net
+  version: 0.4.4-884f27b
+  date: 2026-02-26 20:37:22
+  path: TPDBMarkers.zip
+  sha256: a85a50df10ad599af22d1ab372c2883ab4a983ffe03c9bf44a7b85793d234998
+
+- id: tagGalleriesFromImages
+  name: Tag galleries from images
+  metadata:
+    description: tags galleries with tags of contained images.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: tagGalleriesFromImages.zip
+  sha256: e3b648ee4ddcf65d32b93ef282f0ee18a68ea70214952ef111ffed28a5227c51
+
+- id: performerStashboxUrlToID
+  name: Performer Stashbox Url to ID
+  metadata:
+    description: If the performer has a url for another stashbox add it as an id to the performer
+  version: 0.3-43feb59
+  date: 2025-12-20 01:59:59
+  path: performerStashboxUrlToID.zip
+  sha256: c70fda40b937fcd7cc68df578e95a08b2ac0aac8b1d8fadbecad2d79553c5be3
+
+- id: ahavenvlmconnector
+  name: Haven VLM Connector
+  metadata:
+    description: Tag videos with Vision-Language Models using any OpenAI-compatible VLM endpoint
+  version: 1.1.0-bf07797
+  date: 2026-03-22 02:54:03
+  path: ahavenvlmconnector.zip
+  sha256: 522bf0b76638950f1e4e6482d08f9099ebff29d8004ba075ec27eb34d75a10b9
+  requires:
+    - PythonDepManager
+
+- id: AIOverhaul
+  name: AIOverhaul
+  metadata:
+    description: AI Overhaul for Stash with a full plugin engine included to install and manage asynchronous stash plugins for AI or other purposes.
+  version: 0.9.3-74b0986
+  date: 2026-03-20 16:59:27
+  path: AIOverhaul.zip
+  sha256: 7c6749836ad2cd4e1053c7aaea8cc99771893d5b4a5daefafe9e4db0d04eef52
+
+- id: stashNotes
+  name: Stash Notes
+  metadata:
+    description: Adds a button to the navigation bar which opens a small window for writing notes to your browser's local storage.
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: stashNotes.zip
+  sha256: a112bf5f0a9dccce78fad87b23557f496ba4b71707db263c4cb71599368171b2
+
+- id: GroupAutoScraper
+  name: GroupAutoScraper
+  metadata:
+    description: Automatically re-scrape groups that have an Adult Empire URL to pickup tags and studio for the group.
+  version: 1.1.0-2112d4e
+  date: 2026-03-17 17:53:39
+  path: GroupAutoScraper.zip
+  sha256: f3dca49c881a0fe89a8861d4bc7a8f05e6484f6e757d1f05050ce9e665e9ad7a
+
+- id: AudioPlayerLite
+  name: AudioPlayerLite
+  metadata:
+    description: This plugin identifies files with no video codec and plays them as audio.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: AudioPlayerLite.zip
+  sha256: 0ee2f47868af1ffb7357717873ee782ca91f6e6f6af5f2af739a45ba06323aa4
+
+- id: funscriptMarkers
+  name: Funscript Markers
+  metadata:
+    description: Create markers if there is a funscript with "chapters" included in the metadata of the script
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: funscriptMarkers.zip
+  sha256: 6b61755775d53282e05bc138aec69533fcdb6643dc4a35af91bfda50f8d5e7c9
+
+- id: scenerename
+  name: SceneRename
+  metadata:
+    description: Renames scene files to 'Studio #Code [Resolution] - Title.ext'. Studio name is required (files without one are skipped). Code and resolution are optional. Colons in titles become commas. Triggers on scene update or via manual task. Enable Dry Run to preview changes in scenerename.log before renaming.
+  version: 1.0.1-f926955
+  date: 2026-02-16 22:10:15
+  path: scenerename.zip
+  sha256: 50c7f7fe21e3416feeb4ff497ae46a23c0f6b30614d0d43e5b8c0204a65f191c
+
+- id: mobileWallLayout
+  name: Mobile Wall Layout
+  metadata:
+    description: >
+  version: 1.0-4f5c3e3
+  date: 2026-03-15 22:25:29
+  path: mobileWallLayout.zip
+  sha256: 8715ee5950f6470337036382923eb9fe81c78914639c9030f583db2421430323
+
+- id: chooseYourAdventurePlayer
+  name: Choose Your Own Adventure Player (Backer)
+  metadata:
+    description: Plugin to adapt Choose Your Own Adventure Games to the VideoJS player.
+  version: 1.0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: chooseYourAdventurePlayer.zip
+  sha256: 142c92f659b2fbd730ea090748f0780e5e240488eb39bc2d159238fa0a8496be
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: star_identifier
+  name: Star Identifier
+  metadata:
+    description: Use facial recognition to automatically identify who is in images or scene screenshots from the performers already in your Stash library.
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: star_identifier.zip
+  sha256: 80fe8591af250d6430ca13346a2f8caf0ca1956483d314ef3e995d1246767a38
+
+- id: markerTagToScene
+  name: Scene Marker Tags to Scene
+  metadata:
+    description: Adds primary tag of Scene Marker to the Scene on marker create/update.
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: markerTagToScene.zip
+  sha256: 08d0b6ac998bcb1e1abcbf06ce152103549e3b4a173dc8a74845293d24413c4d
+
+- id: VideoBanner
+  name: Video Banner
+  metadata:
+    description: Displays random generated preview videos in the detail page banner.
+  version: 0.1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: VideoBanner.zip
+  sha256: bac6ad5c8ec2317f288fd21cf23c6242115c92947c969178650b33d90e10f006
+
+- id: tagScenesWithPerfTags
+  name: Tag Scenes From Performer Tags
+  metadata:
+    description: tags scenes with performer tags.
+  version: 0.2.3-43feb59
+  date: 2025-12-20 01:59:59
+  path: tagScenesWithPerfTags.zip
+  sha256: 9572820073070762fc4072b8393a1a5f6e878ba696812231f52d22dbdb7b420c
+
+- id: image_date_from_metadata
+  name: Image Date From Metadata
+  metadata:
+    description: Find date in image or clip metadata
+  version: 1.0.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: image_date_from_metadata.zip
+  sha256: be1b0e9a9870056858ba80b34ebaeb6e3867b24f6a7336d04d1b2cd5d350517e
+  requires:
+    - PythonDepManager
+
+- id: VideoScrollWheel
+  name: VideoScrollWheel
+  metadata:
+    description: Adds functionality to change volume/time in scene video player by hovering over left/right side of player and scrolling with mouse scrollwheel. Scroll while hovering on left side to adjust volume, scroll on right side to skip forward/back.
+  version: 0.4-43feb59
+  date: 2025-12-20 01:59:59
+  path: VideoScrollWheel.zip
+  sha256: d54790bfb4f8ddf7a23013ef4021d0d002e230a059370de9c838b905b8e17027
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: ThumbPreviews
+  name: Thumbnail Previews
+  metadata:
+    description: Displays preview videos on thumbnail cards.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: ThumbPreviews.zip
+  sha256: 63b0b7a98c3b23c34bdc8f4eba6954eb18c608dbdc3f9b3ecdbc830e039d2715
+
+- id: titleFromFilename
+  name: titleFromFilename
+  metadata:
+    description: Set a scene's title from it's filename
+  version: 1.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: titleFromFilename.zip
+  sha256: b8f4a9e989e9fe8104ec0cd8fb455174a3d29639bf06dd0a4e5e706ff312cf4c
+
+- id: tagCopyPaste
+  name: tagCopyPaste
+  metadata:
+    description: Adds Copy/Paste buttons to Tags field.
+  version: 0.5-0587f0d
+  date: 2026-02-19 14:37:15
+  path: tagCopyPaste.zip
+  sha256: c7dad6915a9b0727d927d47dec135021d0f5631368195c34b1a2bf6ae263476f
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: CommunityScriptsUILibrary
+  name: CommunityScriptsUILibrary
+  metadata:
+    description: CommunityScripts UI helper library
+  version: 1.0.0-512fbb8
+  date: 2024-11-27 21:50:31
+  path: CommunityScriptsUILibrary.zip
+  sha256: bed546c8632d2c003211856b03dbb3a2b8ba92995442d4f0ba24debc6d6bfbd1
+
+- id: untagRedundantTags
+  name: Remove redundant parent tags from tagged objects
+  metadata:
+    description: Removes parent tags from objects if a more specific child tag is also present
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: untagRedundantTags.zip
+  sha256: 94be4dceb8b241cb25a5095df1b5bcecf526011d04142e25396e8f2ea8e5d722
+
+- id: defaultDataForPath
+  name: Default Data For Path
+  metadata:
+    description: Adds configured Tags, Performers and/or Studio to all newly scanned Scenes, Images and Galleries.
+  version: 1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: defaultDataForPath.zip
+  sha256: ed7534b0414f0151588e7aff49cf0dfb9b0bc2919742729c562e62816a10f13d
+
+- id: SecondaryPerformerImage
+  name: Add secondary performer image
+  metadata:
+    description: Adds support for a secondary perfomrer image on the perform details page.
+  version: 1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: SecondaryPerformerImage.zip
+  sha256: f3fdc20f54ad8f27320681e1c30cb79404f938e0c6fdc31d7f27a353360b5b24
+
+- id: externalLinksEnhanced
+  name: External Links Enhanced
+  metadata:
+    description: Adds additional icons for external links.
+  version: 1.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: externalLinksEnhanced.zip
+  sha256: 8e86d33451501f4283e2de662ccca9481dd2ed3ca21fd8bc5e61d38ddf843a62
+
+- id: stats
+  name: Extended Stats
+  metadata:
+    description: Adds new stats to the stats page
+  version: 1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: stats.zip
+  sha256: c77e43965a4cde2155f77899003a894345c788933e2a27022f0521f72b8c1432
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: PythonToolsInstaller
+  name: Python Tools Installer
+  metadata:
+    description: Download stashapp-tools for DockerEnv
+  version: 0.1.3-1a9a777
+  date: 2025-12-29 21:13:43
+  path: PythonToolsInstaller.zip
+  sha256: 16d1dd3767516823add79c1f037da0807946c0c0bba67d042f124747f15b444a
+
+- id: stashdb-performer-gallery
+  name: stashdb performer gallery
+  metadata:
+    description: Automatically download performer images from stashdb or other stash-boxes. Add the [Stashbox Performer Gallery] tag to a performer and it will create a gallery of images from that stash-box database. Apply the tag [Set Profile Image] to an image to set it as the profile image of that performer. Note you will need to configure the download path and add this as a path under settings > library
+  version: 0.3-6416844
+  date: 2026-02-04 20:23:29
+  path: stashdb-performer-gallery.zip
+  sha256: 4729d75e8961ff08e734c5f363b410cd39c5eb01a8ebff6d88abeedde9cf8ccb
+
+- id: date_parser
+  name: Gallery Date Parser
+  metadata:
+    description: Find date in path or filename and add it to the gallery
+  version: 1.1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: date_parser.zip
+  sha256: e0e27ee35343f4e25e4fdec6419be722a1d075bafeb3e789978867e28137067e
+  requires:
+    - PythonDepManager
+
+- id: dupeMarker
+  name: Dupe Marker Detector
+  metadata:
+    description: Finds and marks duplicate markers
+  version: 0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: dupeMarker.zip
+  sha256: 6d60e68188531825e49b6965f139e7babcc7cf557524ecd4dd372ac45bad59d5
+
+- id: markerDeleteButton
+  name: Marker Delete Button
+  metadata:
+    description: Adds a delete button to entries on the Markers page and on the Scene page.
+  version: 0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: markerDeleteButton.zip
+  sha256: ecf422cabccb662b7a54f3b35b6b6fd0fb4d197d78576928edcb2d820a88331b
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: extraPerformerInfo
+  name: Extra Performer Info
+  metadata:
+    description: add award info from wikidata
+  version: 0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: extraPerformerInfo.zip
+  sha256: a69d0a723f7a7b739763a4ba4e97b4291fd0195ab1b209cd5f2f4aeb5db87a66
+
+- id: performer-poster-backdrop
+  name: Performer Poster Backdrop
+  metadata:
+    description: Adds a blurred poster backdrop to performer pages.
+  version: 1.0.3-497b028
+  date: 2025-12-23 22:34:52
+  path: performer-poster-backdrop.zip
+  sha256: 762e4e389f021681b7fd24e92ff3f4e1e559fb4c3715c0f688dbf2ab82e6557d
+
+- id: imageGalleryNavigation
+  name: imageGalleryNavigation
+  metadata:
+    description: This plugin adds features for navigating between images within a Gallery from the Image details page.
+  version: 0.4-c981bc4
+  date: 2026-01-16 01:29:54
+  path: imageGalleryNavigation.zip
+  sha256: 0412e6c3bf1155f71b153592c57779cf19d9c2b1d9dfcee0a77b3b83afc4bb0b
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: BulkImageScrape
+  name: Bulk Image Scrape
+  metadata:
+    description: Apply an image scraper to all images
+  version: 0.3.4-9374193
+  date: 2025-12-22 10:38:23
+  path: BulkImageScrape.zip
+  sha256: 7bcb03e1b254a965ea1f03cc1eeb7abbc869e56f7c8f464b3832e052ae991bf2
+  requires:
+    - PythonDepManager
+
+- id: audio-transcodes
+  name: audio-transcodes
+  metadata:
+    description: Generate a transcode video from an audio file
+  version: 0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: audio-transcodes.zip
+  sha256: 4ddabbb88c2001328bead9c00a8010fea984bf07e0702faa8d8e77a29857e821
+
+- id: tagImagesWithPerfTags
+  name: Tag Images From Performer Tags
+  metadata:
+    description: tags images with performer tags.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: tagImagesWithPerfTags.zip
+  sha256: e72674014b33a1b56658fd090114de44bfd8a854e60587630912b4ff1d6351c8
+
+- id: stashai
+  name: Stash AI
+  metadata:
+    description: Add Tags or Markers to a video using AI
+  version: 1.0.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: stashai.zip
+  sha256: d939bf43dded5ca12c4e74760e4deaeb670e2331e035351429cd5df2122b852d
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: miscTags
+  name: Misc Tags
+  metadata:
+    description: Add extra tags for VR and other ues
+  version: 0.4.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: miscTags.zip
+  sha256: 4f153543a153fea0452db37fa73f8cf319e05e0afd4061989c6f6d24a6503000
+
+- id: PythonDepManager
+  name: PythonDepManager
+  metadata:
+    description: Manage Python dependencies for CommunityScripts
+  version: 0.1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: PythonDepManager.zip
+  sha256: 2d66221d592ba7a52e23f7ff121406090bdaef068f663366ba8cd412f071c3ce
+
+- id: AdulttimeInteractiveDL
+  name: Adulttime Interactive Downloader
+  metadata:
+    description: Download Interactive Files for Adulttime Scenes
+  version: 0.1.3-16aeef5
+  date: 2026-03-04 06:09:02
+  path: AdulttimeInteractiveDL.zip
+  sha256: 5aa4b4c1b469f4941be4034eb200e914a027762ed200ee4cba325cccd5255261
+
+- id: pathParser
+  name: Path Parser
+  metadata:
+    description: Updates scene info based on the file path.
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: pathParser.zip
+  sha256: 4159f027b6d7e7adc080c028fc5e9b13b143d67778fe0173f063573821919c83
+
+- id: set_scene_cover
+  name: Set Scene Cover
+  metadata:
+    description: searches Stash for Scenes with a cover image in the same folder and sets the cover image in stash to that image
+  version: 0.4-43feb59
+  date: 2025-12-20 01:59:59
+  path: set_scene_cover.zip
+  sha256: 25df504e53e72faadc86de599ec75942d17bb5c2564ee0c7b09301e64397fa2b
+
+- id: random_button
+  name: RandomButton
+  metadata:
+    description: Adds a button to quickly jump to a random scene, image, performer, studio, group, tag, or gallery, both on overview and internal entity pages.
+  version: 2.0.2-b470716
+  date: 2025-12-29 00:48:40
+  path: random_button.zip
+  sha256: 24855f021c743768dc4ddc639270107648ec83022f65ddc66363bd78585aea72
+
+- id: filenameParser
+  name: Filename parser
+  metadata:
+    description: Parses filename into studio, date, performers and title
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: filenameParser.zip
+  sha256: 821cb1ef4420608813d56c39b0ae9ffce522367725e9744852ab78fe3678744f
+
+- id: deleter
+  name: Addtional Files Deleter
+  metadata:
+    description: Deletes addtional files assosiated with an image or scene object. Which will usually have identical PHashes for scenes or Checksum for images. Unless is a scene manually merged. Apply ignore tag to scene/image object for plugin to bypass.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: deleter.zip
+  sha256: c9885b9eb825ed4c22055ee5423c53e26642852c234762da79d1d9d23b7c4168
+
+- id: sfwswitch
+  name: SFW Switch
+  metadata:
+    description: Add a button to blur covers and images.
+  version: 1.7-6ea6117
+  date: 2026-03-26 01:25:46
+  path: sfwswitch.zip
+  sha256: a92a1064cdee8b5e765ba687e8cc512ce0cec865dcf0d5aadee762c445315aa7
+
+- id: PlexSync
+  name: Plex Sync
+  metadata:
+    description: Refresh Plex metadata when scene updated in Stash. Requires the StashPlexAgent.bundle agent.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: PlexSync.zip
+  sha256: cdf9dba8c6cbe7f41b1efdb7d2de7cf969187e4d645c1d1d09bb5dfc321d51df
+
+- id: renamefile
+  name: RenameFile
+  metadata:
+    description: Renames video (scene) file names when the user edits the [Title] field located in the scene [Edit] tab.
+  version: 1.0.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: renamefile.zip
+  sha256: cd654630984a03e6255a0dfb5e3aaa3eb90d6d20d911d1a928d03b5355739d02
+
+- id: themeSwitch
+  name: Theme Switch
+  metadata:
+    description: Theme and CSS script manager located in main menu bar top right.
+  version: 2.1.2-43feb59
+  date: 2025-12-20 01:59:59
+  path: themeSwitch.zip
+  sha256: aac0205b46752c06345334fa5b373f15ec50fdd37699033526cda167546a91d5
+  requires:
+    - CommunityScriptsUILibrary
+
+- id: videoChapterMarkers
+  name: Video Chapter Markers
+  metadata:
+    description: Create markers from chapter information embedded in video files
+  version: 1.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: videoChapterMarkers.zip
+  sha256: 8c0ab81bbdd7b72db8405f4190e694578c603f24988de00c11ba147c12e90ccd
+
+- id: DupFileManager
+  name: DupFileManager
+  metadata:
+    description: Manages duplicate files.
+  version: 1.0.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: DupFileManager.zip
+  sha256: d21682149bc818b554411d4f03d1b35c2958644d446ef47281c1a7038e78f6ec
+
+- id: funscript_haven
+  name: Funscript Haven
+  metadata:
+    description: Generates funscript files from video scenes using optical flow analysis. Tag scenes with 'FunscriptHaven_Process' to queue them for processing.
+  version: 1.0.0-c1a0224
+  date: 2026-01-05 08:25:49
+  path: funscript_haven.zip
+  sha256: 5f0a6706a7137ca2174beb3861bcbf31b8763dfff8b9225d6519bc66242e8f24
+
+- id: Theme-Pulsar
+  name: Theme - Pulsar
+  metadata:
+    description: Plex Theme for Stash by Fonzie 2020-21
+  version: 1.8.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-Pulsar.zip
+  sha256: 365a59561cf1e724f93d5fd7f7057f14e0f69dfd1e7031f9e5251374b3664354
+
+- id: Theme-NeonDark
+  name: Theme - NeonDark
+  metadata:
+    description: NeonDark Theme for Stash by Dankonite
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-NeonDark.zip
+  sha256: a3349a8b2e2ecb81186837f893cc668aa9bb68e0b03dcac572fb248af2d32de3
+
+- id: Theme-BlackHole
+  name: Theme - BlackHole
+  metadata:
+    description: BlackHole Theme for Stash by BViking78
+  version: 2.0.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-BlackHole.zip
+  sha256: 6b5facf76dd4374815fadfb271e9a9a21d8e72313245b79cf56e57f8a7e79024
+
+- id: Theme-RoundedYellow
+  name: Theme - Rounded Yellow
+  metadata:
+    description: Theme with rounded corners and yellow accents
+  version: 1.0-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-RoundedYellow.zip
+  sha256: 740008fce6fc656174d39d66bee4941de2354b8c67cd73c5b9160203b797d8c1
+
+- id: Theme-Night
+  name: Theme - Night
+  metadata:
+    description: Night Theme for Stash (unknown author)
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-Night.zip
+  sha256: 84cd6592933add70c88749d6bdc98c005c45161abe54884f56c7a3cd135e324c
+
+- id: Theme-Minimal
+  name: Theme - Minimal
+  metadata:
+    description: Minimal Theme for Stash
+  version: 0.2.8-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-Minimal.zip
+  sha256: f4ae476efe9eec099ed7c0ecca730c537d0f485a4e477c6b5bb6b385072586b6
+
+- id: Theme-ColorPalette
+  name: Theme - colorPalette
+  metadata:
+    description: Based on the default theme, change the overall color of the page by setting the hue value. Make minor changes to the remaining styles.
+  version: 0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-ColorPalette.zip
+  sha256: f728e0a82255e5a6d1fe11e116641ebff68735d06c24ac9031f924c5ab4337b6
+
+- id: Theme-ModernDark
+  name: Theme - ModernDark
+  metadata:
+    description: ModernDark Theme for Stash by cj13
+  version: 1.3-c10e0d2
+  date: 2025-12-24 20:34:07
+  path: Theme-ModernDark.zip
+  sha256: b4125b3f5c148de4b93ba6a33ba40315f18e5cec437e5556aa7b5e6384f92eb4
+
+- id: Theme-Plex
+  name: Theme - Plex
+  metadata:
+    description: Plex Theme for Stash by Fidelio 2020
+  version: 1.0.5-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-Plex.zip
+  sha256: aead37844c3f8fbeaed8234d7917b3edfb9b851b2c852ab141f4304b34e84ecb
+
+- id: Theme-PornHub
+  name: Theme - Pornhub
+  metadata:
+    description: PornHub Theme for Stash by neurokinin
+  version: 1.0.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-PornHub.zip
+  sha256: b89b6b9e46e3635e06a0cff56a843cb547a41bef9cfd6a8dcbfcf9286b01e740
+
+- id: Theme-PulsarLight
+  name: Theme - PulsarLight
+  metadata:
+    description: Plex Theme for Stash by Fonzie 2021
+  version: 0.3.1-43feb59
+  date: 2025-12-20 01:59:59
+  path: Theme-PulsarLight.zip
+  sha256: c88e1cf59733338302a0e6dd1a3bab445e6ff476b193bfe1e520c84f68091f68
+

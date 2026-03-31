@@ -1,0 +1,3 @@
+online: https://docs.stashapp.cc/api/
+online: https://github.com/stashapp/stash
+copied: README.md

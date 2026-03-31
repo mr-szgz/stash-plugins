@@ -1,0 +1,5 @@
+copied directory: ui/v2.5/graphql/queries
+copied directory: ui/v2.5/graphql/mutations
+copied directory: ui/v2.5/graphql/data
+copied: ui/v2.5/graphql/subscriptions.graphql
+tree url: https://github.com/stashapp/stash/tree/develop/ui/v2.5/graphql

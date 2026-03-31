@@ -1,0 +1,9 @@
+retrieved_at=2026-03-31T14:01:50-04:00
+upstream_head=0ed2992a72c606e14c859737690bd8c06030a461
+repo_url=https://github.com/stashapp/stash
+docs_api_url=https://docs.stashapp.cc/api/
+releases_page=https://github.com/stashapp/stash/releases
+latest_release_url=https://github.com/stashapp/stash/releases/tag/v0.31.0
+latest_develop_url=https://github.com/stashapp/stash/releases/tag/latest_develop
+schema_tree_url=https://github.com/stashapp/stash/tree/develop/graphql/schema
+ui_graphql_tree_url=https://github.com/stashapp/stash/tree/develop/ui/v2.5/graphql

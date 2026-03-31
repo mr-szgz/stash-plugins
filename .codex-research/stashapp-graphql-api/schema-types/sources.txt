@@ -1,0 +1,5 @@
+copied directory: graphql/schema
+copied: gqlgen.yml
+copied: .gqlgenc.yml
+copied: ui/v2.5/graphql/client-schema.graphql
+tree url: https://github.com/stashapp/stash/tree/develop/graphql/schema
