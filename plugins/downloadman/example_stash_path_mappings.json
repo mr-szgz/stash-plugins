@@ -1,0 +1,10 @@
+[
+  {
+    "orig": "/LIBRARY/EXAMPLE-A/",
+    "local": "X:/Example/Library-A/"
+  },
+  {
+    "orig": "/LIBRARY/EXAMPLE-B/",
+    "local": "Y:/Example/Library-B/"
+  }
+]
