@@ -2,11 +2,7 @@ const CARD_SELECTOR = ".scene-card,.wall-item";
 const STREAM_SELECTOR = 'a[href*="/scene/"][href*="/stream"]';
 const BUTTON_CLASS = "downloadman-button";
 const TOOLS_ROUTE = "/settings/tools/downloadman";
-const SCENE_PATH_RE = /^\/scene\/\d+(?:\/|$)/;
-const DEFAULT_SETTINGS = {
-  displayGridLinks: true,
-  displaySceneDetailLinks: true,
-};
+const SCENE_PAGE_PATH_RE = /^\/scenes\/\d+(?:\/|$)/;
 
 const DOWNLOAD_ICON = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="14" height="14" aria-hidden="true">
@@ -37,7 +33,7 @@ const SCENE_QUERY = `
 let scanQueued = false;
 const React = PluginApi.React;
 const downloadmanState = {
-  settings: { ...DEFAULT_SETTINGS },
+  settings: null,
 };
 
 const DownloadmanToolsPage = () =>
@@ -67,27 +63,39 @@ async function loadSettings() {
   });
 
   const payload = await response.json();
-  const settings = payload.data.configuration.plugins?.downloadman ?? {};
+  const settings = payload.data.configuration.plugins.downloadman;
 
   downloadmanState.settings = {
-    displayGridLinks: settings.displayGridLinks ?? DEFAULT_SETTINGS.displayGridLinks,
-    displaySceneDetailLinks:
-      settings.displaySceneDetailLinks ?? DEFAULT_SETTINGS.displaySceneDetailLinks,
+    displayGridLinks: requireBooleanSetting(settings, "displayGridLinks"),
+    displaySceneDetailLinks: requireBooleanSetting(settings, "displaySceneDetailLinks"),
   };
 }
 
-function getSceneIdFromHref(href) {
-  const match = href.match(/\/scene\/(\d+)/);
+function requireBooleanSetting(settings, name) {
+  if (!settings || typeof settings[name] !== "boolean") {
+    throw new Error(`downloadman missing boolean plugin setting: ${name}`);
+  }
+
+  return settings[name];
+}
+
+function getSceneIdFromSceneHref(href) {
+  const match = href.match(/^\/scenes\/(\d+)(?:\/|$|\?|#)/);
+  return match ? match[1] : null;
+}
+
+function getSceneIdFromStreamHref(href) {
+  const match = href.match(/^\/scene\/(\d+)\/stream(?:\/|$|\?|#)/);
   return match ? match[1] : null;
 }
 
 function getSceneIdFromCard(card) {
-  const link = card.querySelector('a[href^="/scene"]');
-  return link ? getSceneIdFromHref(link.getAttribute("href") || "") : null;
+  const link = card.querySelector('a[href^="/scenes/"]');
+  return link ? getSceneIdFromSceneHref(link.getAttribute("href") || "") : null;
 }
 
 function isSceneDetailPage() {
-  return SCENE_PATH_RE.test(window.location.pathname);
+  return SCENE_PAGE_PATH_RE.test(window.location.pathname);
 }
 
 function hasNestedCard(card) {
@@ -291,7 +299,7 @@ function mountDetailButton(streamLink) {
   }
 
   const href = streamLink.getAttribute("href") || "";
-  const sceneId = getSceneIdFromHref(href);
+  const sceneId = getSceneIdFromStreamHref(href);
   if (!sceneId) {
     return;
   }
