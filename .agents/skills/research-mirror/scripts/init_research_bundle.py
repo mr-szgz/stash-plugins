@@ -1,23 +1,34 @@
 #!/usr/bin/env python3
 """
 Initialize a dated research bundle for the research-mirror skill.
-
-Usage:
-    python scripts/init_research_bundle.py <topic-slug> [--date YYYY-MM-DD] [--root PATH]
 """
 
 from __future__ import annotations
 
 import argparse
+import json
+import sys
 from datetime import date
 from pathlib import Path
+
+from _bundle_utils import ensure_standard_bundle, normalize_topic_slug, validate_date_string
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Create a standard .codex-research bundle skeleton.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  python scripts/init_research_bundle.py openai-skills\n"
+            "  python scripts/init_research_bundle.py \"OpenAI Skills\" --date 2026-03-31 --format json\n"
+            "  python scripts/init_research_bundle.py openai-skills --root tmp/research\n"
+        ),
     )
-    parser.add_argument("topic_slug", help="Kebab-case topic slug for the research bundle.")
+    parser.add_argument(
+        "topic_slug",
+        help="Topic name or slug for the research bundle. Values are normalized to kebab-case.",
+    )
     parser.add_argument(
         "--date",
         default=date.today().isoformat(),
@@ -28,81 +39,35 @@ def build_parser() -> argparse.ArgumentParser:
         default=".codex-research",
         help="Research root directory. Defaults to .codex-research.",
     )
+    parser.add_argument(
+        "--format",
+        choices={"json", "path"},
+        default="json",
+        help="Stdout format. Use json for agent workflows or path for simple shell piping. Default: json.",
+    )
     return parser
-
-
-def write_if_missing(path: Path, content: str) -> None:
-    if not path.exists():
-        path.write_text(content, encoding="utf-8")
 
 
 def main() -> int:
     args = build_parser().parse_args()
+    topic_slug = normalize_topic_slug(args.topic_slug)
+    bundle_date = validate_date_string(args.date)
+    bundle_root, created_paths = ensure_standard_bundle(Path(args.root), topic_slug, bundle_date)
 
-    bundle_root = Path(args.root) / args.topic_slug / args.date
-    raw_dir = bundle_root / "raw"
-    fixtures_dir = bundle_root / "fixtures"
+    if args.format == "path":
+        print(bundle_root.resolve())
+        return 0
 
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    fixtures_dir.mkdir(parents=True, exist_ok=True)
-
-    write_if_missing(
-        bundle_root / "README.md",
-        "\n".join(
-            [
-                f"# {args.topic_slug}",
-                "",
-                f"- Topic: `{args.topic_slug}`",
-                f"- Capture Date: `{args.date}`",
-                "- Scope: TODO",
-                "",
-            ]
-        ),
-    )
-    write_if_missing(
-        bundle_root / "SOURCE_URLS.md",
-        "\n".join(
-            [
-                "# Source URLs",
-                "",
-                "- TODO: add every official URL used in this bundle",
-                "",
-            ]
-        ),
-    )
-    write_if_missing(
-        bundle_root / "RESEARCH_SUMMARY.md",
-        "\n".join(
-            [
-                "# Research Summary",
-                "",
-                f"- Research Date: `{args.date}`",
-                "- Official Version: TODO",
-                "- Key Findings:",
-                "  - TODO",
-                "- Compatibility Notes:",
-                "  - TODO",
-                "",
-            ]
-        ),
-    )
-    write_if_missing(
-        bundle_root / "REFERENCE_INDEX.md",
-        "\n".join(
-            [
-                "# Reference Index",
-                "",
-                "- `README.md`: bundle scope",
-                "- `SOURCE_URLS.md`: verified sources",
-                "- `RESEARCH_SUMMARY.md`: findings and version notes",
-                "- `fixtures/`: user-provided artifacts",
-                "- `raw/`: mirrored source material",
-                "",
-            ]
-        ),
-    )
-
-    print(bundle_root.resolve())
+    result = {
+        "topic_input": args.topic_slug,
+        "topic_slug": topic_slug,
+        "bundle_date": bundle_date,
+        "bundle_path": str(bundle_root.resolve()),
+        "created": [str(path.resolve()) for path in created_paths],
+        "created_count": len(created_paths),
+    }
+    json.dump(result, fp=sys.stdout, indent=2)
+    sys.stdout.write("\n")
     return 0
 
 

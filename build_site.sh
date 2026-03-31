@@ -13,6 +13,8 @@ if [ -z "$outdir" ]; then
     outdir="_site"
 fi
 
+channel_label="$2"
+
 rm -rf "$outdir"
 mkdir -p "$outdir"
 
@@ -41,6 +43,9 @@ buildPlugin()
     popd > /dev/null
 
     name=$(grep "^name:" "$f" | head -n 1 | cut -d' ' -f2- | sed -e 's/\r//' -e 's/^"\(.*\)"$/\1/')
+    if [ -n "$channel_label" ]; then
+        name="$name ($channel_label)"
+    fi
     description=$(grep "^description:" "$f" | head -n 1 | cut -d' ' -f2- | sed -e 's/\r//' -e 's/^"\(.*\)"$/\1/')
     ymlVersion=$(grep "^version:" "$f" | head -n 1 | cut -d' ' -f2- | sed -e 's/\r//' -e 's/^"\(.*\)"$/\1/')
     version="$ymlVersion-$version"

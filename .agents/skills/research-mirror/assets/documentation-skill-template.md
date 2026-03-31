@@ -1,6 +1,6 @@
 # Documentation Skill Template
 
-Use this reference when converting a completed research bundle into a documentation-serving Codex skill.
+Use this asset when converting a completed research bundle into a documentation-serving Codex skill.
 
 ## Frontmatter
 
@@ -53,7 +53,7 @@ List the primary official references used to build the skill.
 
 1. Read `SOURCE_URLS.md` to confirm official sources.
 2. Read `RESEARCH_SUMMARY.md` to extract versions, capabilities, and compatibility notes.
-3. Pull only the needed details from `raw/` and `REFERENCE_INDEX.md`.
+3. Pull only the needed details from `references/` and `REFERENCE_INDEX.md`.
 4. Reorganize the material into task-oriented documentation instead of source-order notes.
 5. Add complete practical examples for the most common requests.
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Mirror"
-  short_description: "Mirror official docs into .codex-research"
-  default_prompt: "Use $research-mirror to capture current official documentation for a tool or API into this repo's .codex-research folder."
+  short_description: "Mirror official docs and llms.txt pages into .codex-research"
+  default_prompt: "Use $research-mirror to capture current official documentation for a tool or API into this repo's .codex-research folder, checking official domains for llms.txt and saving faithful markdown mirrors under references/."
