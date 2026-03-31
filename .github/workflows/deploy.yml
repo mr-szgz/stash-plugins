@@ -2,10 +2,13 @@ name: Deploy repository to Github Pages
 
 on:
   push:
-      paths:
+    paths:
       - 'plugins/**'
-      branches:
+      - 'README.md'
+      - '.github/workflows/deploy.yml'
+    branches:
       - main
+      - dev
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -19,19 +22,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '0'
-    - run: |
-        chmod +x build_site.sh    
-        ./build_site.sh _site/${{ github.ref_name }}
-    - uses: actions/upload-pages-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: Build both release channels
+        run: |
+          set -euo pipefail
+          git fetch origin main dev
+          rm -rf ../stash-plugins-main ../stash-plugins-dev _site
+          git worktree add ../stash-plugins-main origin/main
+          git worktree add ../stash-plugins-dev origin/dev
+          chmod +x ../stash-plugins-main/build_site.sh
+          chmod +x ../stash-plugins-dev/build_site.sh
+          ../stash-plugins-main/build_site.sh "$GITHUB_WORKSPACE/_site/main"
+          ../stash-plugins-dev/build_site.sh "$GITHUB_WORKSPACE/_site/dev"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}main/index.yml
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:

@@ -1,11 +1,12 @@
 # Stash Plugins
 
-This repository publishes a Stash plugin source index for the plugins stored in [`plugins`](./plugins).
+This repository publishes Stash plugin source indexes for the plugins stored in [`plugins`](./plugins).
 
 - Repository: `https://github.com/mr-szgz/stash-plugins`
-- Source index: `https://mr-szgz.github.io/stash-plugins/main/index.yml`
+- Stable source index: `https://mr-szgz.github.io/stash-plugins/main/index.yml`
+- Dev source index: `https://mr-szgz.github.io/stash-plugins/dev/index.yml`
 
-GitHub Actions rebuilds and publishes the source index when changes are pushed to `main` under `plugins/**`.
+GitHub Actions rebuilds and publishes both source indexes when changes are pushed to `main` or `dev` under `plugins/**`.
 Plugins marked with `# disabled: true` in their `.yml` manifest are skipped from the published index.
 
 ## Available plugin
@@ -14,9 +15,10 @@ Plugins marked with `# disabled: true` in their `.yml` manifest are skipped from
 
 ## Using this source
 
-Add the source index URL below to your Stash plugin sources:
+Add one or both source index URLs below to your Stash plugin sources:
 
-`https://mr-szgz.github.io/stash-plugins/main/index.yml`
+- Stable: `https://mr-szgz.github.io/stash-plugins/main/index.yml`
+- Dev: `https://mr-szgz.github.io/stash-plugins/dev/index.yml`
 
 ## Share your plugins
 
