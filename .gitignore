@@ -112,3 +112,5 @@ dmypy.json
 
 # User-local plugin files
 plugins/downloadman/stash_path_mappings.json
+
+.codex-research/
