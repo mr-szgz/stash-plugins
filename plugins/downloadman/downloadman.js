@@ -2,6 +2,7 @@ const CARD_SELECTOR = ".scene-card,.wall-item";
 const STREAM_SELECTOR = 'a[href*="/scene/"][href*="/stream"]';
 const BUTTON_CLASS = "downloadman-button";
 const TOOLS_ROUTE = "/settings/tools/downloadman";
+const SCENE_PATH_RE = /^\/scene[s]?\/\d+(?:\/|$)/;
 const DEFAULT_SETTINGS = {
   displayGridLinks: true,
   displaySceneDetailLinks: true,
@@ -97,6 +98,14 @@ function getSceneIdFromHref(href) {
 function getSceneIdFromCard(card) {
   const link = card.querySelector('a[href^="/scene"]');
   return link ? getSceneIdFromHref(link.getAttribute("href") || "") : null;
+}
+
+function isSceneDetailPage() {
+  return SCENE_PATH_RE.test(window.location.pathname);
+}
+
+function hasNestedCard(card) {
+  return !!card.querySelector(CARD_SELECTOR);
 }
 
 function setButtonState(button, state) {
@@ -247,6 +256,10 @@ function mountCardButton(card) {
     return;
   }
 
+  if (hasNestedCard(card)) {
+    return;
+  }
+
   if (card.querySelector(`.${BUTTON_CLASS}`)) {
     return;
   }
@@ -282,7 +295,14 @@ function mountDetailButton(streamLink) {
     return;
   }
 
-  if (streamLink.closest(".downloadman-detail")) {
+  if (!isSceneDetailPage()) {
+    return;
+  }
+
+  if (
+    streamLink.classList.contains(BUTTON_CLASS)
+    || streamLink.closest(".downloadman-overlay,.downloadman-detail")
+  ) {
     return;
   }
 
@@ -390,7 +410,9 @@ function mountToolsLink() {
 
 function scan() {
   document.querySelectorAll(CARD_SELECTOR).forEach(mountCardButton);
-  document.querySelectorAll(STREAM_SELECTOR).forEach(mountDetailButton);
+  if (isSceneDetailPage()) {
+    document.querySelectorAll(STREAM_SELECTOR).forEach(mountDetailButton);
+  }
   mountToolsLink();
 }
 

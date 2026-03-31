@@ -1,0 +1,9 @@
+- id: downloadman
+  name: Downloadman (dev)
+  metadata:
+    description: Add direct download buttons to Stash scenes.
+  version: 2.0-42d810d
+  date: 2026-03-31 18:53:26
+  path: downloadman.zip
+  sha256: 
+
