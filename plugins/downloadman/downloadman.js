@@ -2,6 +2,7 @@ const CARD_SELECTOR = ".scene-card,.wall-item";
 const STREAM_SELECTOR = 'a[href*="/scene/"][href*="/stream"]';
 const BUTTON_CLASS = "downloadman-button";
 const TOOLS_ROUTE = "/settings/tools/downloadman";
+const SCENE_PATH_RE = /^\/scene\/\d+(?:\/|$)/;
 const DEFAULT_SETTINGS = {
   displayGridLinks: true,
   displaySceneDetailLinks: true,
@@ -48,17 +49,6 @@ const DownloadmanToolsPage = () =>
   });
 
 PluginApi.register.route(TOOLS_ROUTE, DownloadmanToolsPage);
-syncGlobalSettings();
-
-function syncGlobalSettings() {
-  window.downloadman = window.downloadman || {};
-  window.downloadman.user = window.downloadman.user || {};
-  window.downloadman.user.settings = { ...downloadmanState.settings };
-}
-
-function parsePluginsConfig(rawPlugins) {
-  return typeof rawPlugins === "string" ? JSON.parse(rawPlugins) : rawPlugins;
-}
 
 async function loadSettings() {
   const response = await fetch("/graphql", {
@@ -77,26 +67,31 @@ async function loadSettings() {
   });
 
   const payload = await response.json();
-  const plugins = parsePluginsConfig(payload.data.configuration.plugins) || {};
-  const settings = plugins.downloadman || {};
+  const settings = payload.data.configuration.plugins?.downloadman ?? {};
 
   downloadmanState.settings = {
     displayGridLinks: settings.displayGridLinks ?? DEFAULT_SETTINGS.displayGridLinks,
     displaySceneDetailLinks:
       settings.displaySceneDetailLinks ?? DEFAULT_SETTINGS.displaySceneDetailLinks,
   };
-
-  syncGlobalSettings();
 }
 
 function getSceneIdFromHref(href) {
-  const match = href.match(/\/scene[s]?\/(\d+)/);
+  const match = href.match(/\/scene\/(\d+)/);
   return match ? match[1] : null;
 }
 
 function getSceneIdFromCard(card) {
   const link = card.querySelector('a[href^="/scene"]');
   return link ? getSceneIdFromHref(link.getAttribute("href") || "") : null;
+}
+
+function isSceneDetailPage() {
+  return SCENE_PATH_RE.test(window.location.pathname);
+}
+
+function hasNestedCard(card) {
+  return !!card.querySelector(CARD_SELECTOR);
 }
 
 function setButtonState(button, state) {
@@ -124,9 +119,7 @@ function setButtonState(button, state) {
 function stopEvent(event) {
   event.preventDefault();
   event.stopPropagation();
-  if (typeof event.stopImmediatePropagation === "function") {
-    event.stopImmediatePropagation();
-  }
+  event.stopImmediatePropagation();
 }
 
 function createDownloadButton(sceneId, href) {
@@ -247,6 +240,10 @@ function mountCardButton(card) {
     return;
   }
 
+  if (hasNestedCard(card)) {
+    return;
+  }
+
   if (card.querySelector(`.${BUTTON_CLASS}`)) {
     return;
   }
@@ -282,7 +279,14 @@ function mountDetailButton(streamLink) {
     return;
   }
 
-  if (streamLink.closest(".downloadman-detail")) {
+  if (!isSceneDetailPage()) {
+    return;
+  }
+
+  if (
+    streamLink.classList.contains(BUTTON_CLASS)
+    || streamLink.closest(".downloadman-overlay,.downloadman-detail")
+  ) {
     return;
   }
 
@@ -319,11 +323,7 @@ function mountDetailButton(streamLink) {
 }
 
 function isToolsPage() {
-  const url = new URL(window.location.href);
-  return (
-    (url.pathname === "/settings" && url.searchParams.get("tab") === "tools")
-    || url.pathname === "/settings/tools"
-  );
+  return window.location.pathname.startsWith("/settings/tools");
 }
 
 function stripIds(root) {
@@ -390,7 +390,9 @@ function mountToolsLink() {
 
 function scan() {
   document.querySelectorAll(CARD_SELECTOR).forEach(mountCardButton);
-  document.querySelectorAll(STREAM_SELECTOR).forEach(mountDetailButton);
+  if (isSceneDetailPage()) {
+    document.querySelectorAll(STREAM_SELECTOR).forEach(mountDetailButton);
+  }
   mountToolsLink();
 }
 
