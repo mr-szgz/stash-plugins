@@ -66,32 +66,22 @@ async function loadSettings() {
   const settings = payload.data.configuration.plugins.downloadman;
 
   downloadmanState.settings = {
-    displayGridLinks: requireBooleanSetting(settings, "displayGridLinks"),
-    displaySceneDetailLinks: requireBooleanSetting(settings, "displaySceneDetailLinks"),
+    displayGridLinks: settings.displayGridLinks,
+    displaySceneDetailLinks: settings.displaySceneDetailLinks,
   };
 }
 
-function requireBooleanSetting(settings, name) {
-  if (!settings || typeof settings[name] !== "boolean") {
-    throw new Error(`downloadman missing boolean plugin setting: ${name}`);
-  }
-
-  return settings[name];
-}
-
 function getSceneIdFromSceneHref(href) {
-  const match = href.match(/^\/scenes\/(\d+)(?:\/|$|\?|#)/);
-  return match ? match[1] : null;
+  return href.match(/^\/scenes\/(\d+)(?:\/|$|\?|#)/)[1];
 }
 
 function getSceneIdFromStreamHref(href) {
-  const match = href.match(/^\/scene\/(\d+)\/stream(?:\/|$|\?|#)/);
-  return match ? match[1] : null;
+  return href.match(/^\/scene\/(\d+)\/stream(?:\/|$|\?|#)/)[1];
 }
 
 function getSceneIdFromCard(card) {
   const link = card.querySelector('a[href^="/scenes/"]');
-  return link ? getSceneIdFromSceneHref(link.getAttribute("href") || "") : null;
+  return getSceneIdFromSceneHref(link.getAttribute("href"));
 }
 
 function isSceneDetailPage() {
@@ -214,33 +204,24 @@ async function fetchScene(sceneId) {
 }
 
 async function downloadScene(button) {
-  let finished = false;
   setButtonState(button, "busy");
 
-  try {
-    const scene = await fetchScene(button.dataset.sceneId);
-    button.href = scene.streamUrl;
+  const scene = await fetchScene(button.dataset.sceneId);
+  button.href = scene.streamUrl;
 
-    const response = await fetch(scene.streamUrl, { credentials: "include" });
-    const blob = await response.blob();
-    saveBlob(blob, scene.filename);
+  const response = await fetch(scene.streamUrl, { credentials: "include" });
+  const blob = await response.blob();
+  saveBlob(blob, scene.filename);
 
-    finished = true;
-    setButtonState(button, "done");
-    button.style.opacity = "1";
+  setButtonState(button, "done");
+  button.style.opacity = "1";
 
-    window.setTimeout(() => {
-      if (button.isConnected && button.dataset.state === "done") {
-        setButtonState(button, "idle");
-        button.style.opacity = "0.28";
-      }
-    }, 1600);
-  } finally {
-    if (!finished) {
+  window.setTimeout(() => {
+    if (button.isConnected && button.dataset.state === "done") {
       setButtonState(button, "idle");
       button.style.opacity = "0.28";
     }
-  }
+  }, 1600);
 }
 
 function mountCardButton(card) {
@@ -257,9 +238,6 @@ function mountCardButton(card) {
   }
 
   const sceneId = getSceneIdFromCard(card);
-  if (!sceneId) {
-    return;
-  }
 
   if (window.getComputedStyle(card).position === "static") {
     card.style.position = "relative";
@@ -300,9 +278,6 @@ function mountDetailButton(streamLink) {
 
   const href = streamLink.getAttribute("href") || "";
   const sceneId = getSceneIdFromStreamHref(href);
-  if (!sceneId) {
-    return;
-  }
 
   const wrapper = document.createElement("div");
   wrapper.className = "downloadman-detail";
@@ -371,10 +346,6 @@ function mountToolsLink() {
   const source = [...document.querySelectorAll("a,button,[role='button']")].find((element) =>
     /GraphQL playground/i.test(element.textContent || "")
   );
-
-  if (!source || !source.parentElement) {
-    return;
-  }
 
   const link = source.cloneNode(true);
   stripIds(link);
